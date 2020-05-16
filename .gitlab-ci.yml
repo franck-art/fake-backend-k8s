@@ -1,4 +1,4 @@
-image: mysql:5.7
+image: 'docker'
 
 stages:
   - build
