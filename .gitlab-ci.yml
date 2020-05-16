@@ -44,7 +44,7 @@ test:
     - echo "TEST THE JOB"
 
 
-push
+push:
   stage: push
   script: 
     - echo "docker login -u $USERNAME -p $PASSWORD"
