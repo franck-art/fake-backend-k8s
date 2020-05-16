@@ -48,7 +48,7 @@ push:
   stage: push
   script: 
     - echo "docker login -u $USERNAME -p $PASSWORD"
-    - echo "docker push $IMAGE"
+    - echo "docker push $USERNAME/$IMAGE"
 
   only:
     - master
