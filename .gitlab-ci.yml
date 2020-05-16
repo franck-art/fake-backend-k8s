@@ -1,4 +1,4 @@
-image: 'docker'
+image: docker
 
 stages:
   - build
@@ -50,7 +50,7 @@ push:
     - echo "docker login -u $USERNAME -p $PASSWORD"
     - echo "docker push $IMAGE"
 
- only:
+  only:
     - master
    
 
