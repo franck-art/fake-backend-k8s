@@ -1,0 +1,60 @@
+image: docker
+
+stages:
+  - build
+  - run_mysql
+  - run_appli
+  - test
+  - push
+
+
+variables:
+  IMAGE: "fake-backend:gitlab"
+
+
+before_script:
+  - echo "docker network create network_game"
+  - echo "docker volume create mysql_data"
+
+
+build:
+  stage: build
+  script:
+    - echo "docker built -t $IMAGE"
+
+
+run_backend:
+  stage: run_mysql
+  script:
+    - echo "docker run --name dbgame -v mysql_data:/var/lib/mysql  -e  MYSQL_ROOT_PASSWORD=rootpwdgame -e  MYSQL_DATABASE=battleboat -e MYSQL_USER=battleuser -e  MYSQL_PASSWORD=battlepass --network $(network) -d mysql:5.7"
+    - echo "fin run MYSQL"
+
+
+run_frondend:
+  stage: run_appli
+  script:
+    - echo "docker run --name battlegame -v ${PWD}/battleboat:/etc/backend/static -p 3000:3000 -e  DATABASE_HOST=dbgame -e  DATABASE_PORT=3306 -e  DATABASE_USER=battleuser -e DATABASE_PASSWORD=battlepass -e DATABASE_NAME=battleboat --network $(network) -d  $IMAGE"
+    - echo "docker ps"
+    - echo "sleep 5"
+
+
+test:
+  stage: test
+  script:
+    - echo "TEST THE JOB"
+
+
+push:
+  stage: push
+  script: 
+    - echo "docker login -u $USERNAME -p $PASSWORD"
+    - echo "rm -vf battlegame dbgame"
+
+
+after_script:
+  - echo "docker push $IMAGE"
+  only:
+    - master
+
+
+
