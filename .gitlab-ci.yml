@@ -44,17 +44,17 @@ test:
     - echo "TEST THE JOB"
 
 
-push:
+push
   stage: push
   script: 
     - echo "docker login -u $USERNAME -p $PASSWORD"
-    - echo "rm -vf battlegame dbgame"
+    - echo "docker push $IMAGE"
 
+ only:
+    - master
+   
 
 after_script:
-  - echo "docker push $IMAGE"
-  only:
-    - master
-
-
+  
+    - echo "rm -vf battlegame dbgame"
 
