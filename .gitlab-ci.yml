@@ -1,4 +1,4 @@
-image: docker
+image: docker:stable
 
 stages:
   - build
@@ -42,13 +42,13 @@ test:
   stage: test
   script:
     - echo "TEST THE JOB"
-
+    - echo " if [ "$$(curl -I  http://localhost:3000 | head -1 | cut -d '1' -f 3 | cut -d 'O' -f 1)" = "200" ] ; then echo "test OK" ;  exit 0; else echo "test$"
 
 push:
   stage: push
   script: 
     - echo "docker login -u $USERNAME -p $PASSWORD"
-    - echo "docker push $USERNAME/$IMAGE"
+    - echo "docker push  $USERNAME/$IMAGE"
 
   only:
     - master
