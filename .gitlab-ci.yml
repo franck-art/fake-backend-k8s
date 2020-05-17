@@ -27,8 +27,8 @@ build:
 run_backend:
   stage: run_mysql
   script:
-    - `docker run --name dbgame  -e  MYSQL_ROOT_PASSWORD=rootpwdgame -e  MYSQL_DATABASE=battleboat -e MYSQL_USER=battleuser -e  MYSQL_PASSWORD=battlepass --network $(network) -d  mysql:5.7`
-    - `docker cp mysql_data:/var/lib/mysql `
+    - echo `docker run --name dbgame  -e  MYSQL_ROOT_PASSWORD=rootpwdgame -e  MYSQL_DATABASE=battleboat -e MYSQL_USER=battleuser -e  MYSQL_PASSWORD=battlepass --network $(network) -d  mysql:5.7`
+    - echo `docker cp mysql_data:/var/lib/mysql `
     - echo "fin run MYSQL"
 
 
