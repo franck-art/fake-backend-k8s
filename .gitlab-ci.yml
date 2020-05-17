@@ -9,7 +9,7 @@ stages:
 
 
 variables:
-  IMAGE: "fake-backend:gitlab"
+  IMAGE: "fake-backend:gitlab_ci"
 
 
 before_script:
