@@ -13,7 +13,7 @@ variables:
 
 
 before_script:
-  - docker rm -vf battlegame dbgame || echo "container already deleded"
+  - echo `docker rm -vf battlegame dbgame || echo "container already deleded" `
   - echo `docker network create network_game`
   - echo `docker volume create mysql_data`
 
@@ -27,17 +27,17 @@ build:
 run_backend:
   stage: run_mysql
   script:
-    - docker run --name dbgame  -e  MYSQL_ROOT_PASSWORD=rootpwdgame -e  MYSQL_DATABASE=battleboat -e MYSQL_USER=battleuser -e  MYSQL_PASSWORD=battlepass --network $(network) -d  mysql:5.7
-    - docker cp mysql_data:/var/lib/mysql
+    - `docker run --name dbgame  -e  MYSQL_ROOT_PASSWORD=rootpwdgame -e  MYSQL_DATABASE=battleboat -e MYSQL_USER=battleuser -e  MYSQL_PASSWORD=battlepass --network $(network) -d  mysql:5.7`
+    - `docker cp mysql_data:/var/lib/mysql `
     - echo "fin run MYSQL"
 
 
 run_frondend:
   stage: run_appli
   script:
-    - docker run --name battlegame  -p 3000:3000 -e  DATABASE_HOST=dbgame -e  DATABASE_PORT=3306 -e  DATABASE_USER=battleuser -e DATABASE_PASSWORD=battlepass -e DATABASE_NAME=battleboat --network $(network) -d  $IMAGE
-    - docker cp  ${PWD}/battleboat:/etc/backend/static
-    - docker ps
+    - echo `docker run --name battlegame  -p 3000:3000 -e  DATABASE_HOST=dbgame -e  DATABASE_PORT=3306 -e  DATABASE_USER=battleuser -e DATABASE_PASSWORD=battlepass -e DATABASE_NAME=battleboat --network $(network) -d  $IMAGE `
+    - echo `docker cp  ${PWD}/battleboat:/etc/backend/static `
+    - echo `docker ps`
     - sleep 5
 
 
@@ -45,11 +45,11 @@ test:
   stage: test
 
   before_script:
-    - apk add --update curl python && rm -rf /var/cahe/apk/*
+    - echo `apk add --update curl python && rm -rf /var/cahe/apk/* `
 
   script:
     - echo "TEST THE JOB"
-    - curl -I  http://localhost:3000
+    - echo `curl -I  http://localhost:3000`
 
 push:
   stage: push
@@ -63,5 +63,5 @@ push:
 
 after_script:
   
-    - docker rm -vf battlegame dbgame
+    - echo `docker rm -vf battlegame dbgame`
 
