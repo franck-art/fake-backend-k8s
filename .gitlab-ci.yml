@@ -10,7 +10,7 @@ stages:
 
 
 variables:
-  IMAGE: "fake-backend-gitlab:gitlab_ci"
+  IMAGE: "fake-backend-gitlab"
 
 build:
   stage: build
@@ -58,8 +58,8 @@ push:
   stage: push
   script: 
     - docker login -u $USERNAME -p $PASSWORD
-    - docker tag $USERNAME/$IMAGE
-    - docker push  $USERNAME/$IMAGE
+    - docker tag $IMAGE $USERNAME/$IMAGE:gitlab_ci
+    - docker push  $USERNAME/$IMAGE:gitlab_ci
 
   only:
     - master
