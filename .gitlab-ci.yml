@@ -5,7 +5,7 @@ stages:
   - run_mysql
   - run_appli
   - test
-  - clean
+  - clean containers
   - push
 
 
