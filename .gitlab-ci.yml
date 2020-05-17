@@ -9,7 +9,7 @@ stages:
 
 
 variables:
-  IMAGE: "fake-backend:gitlab_ci"
+  IMAGE: "fake-backend-gitlab:gitlab_ci"
 
 
 before_script:
@@ -46,7 +46,7 @@ test:
 
   script:
     - echo "TEST THE JOB"
-    - curl -I  http://172.17.0.1/:3000
+    - curl -I  http://172.31.40.195:3000
 
 push:
   stage: push
