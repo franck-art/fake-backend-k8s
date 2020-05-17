@@ -12,20 +12,19 @@ stages:
 variables:
   IMAGE: "fake-backend-gitlab:gitlab_ci"
 
-
-before_script:
-    - docker rm -vf battlegame dbgame || echo "container already deleted" 
-
-
 build:
   stage: build
+  before_script:
+    - docker rm -vf battlegame dbgame || echo "container already deleted"
   script:
     - docker build -t $IMAGE ./fake-backend
-    - docker volume create mysql_data  || true
-    - docker network create network_game  || true
+  
 
 run_backend:
   stage: run_mysql
+  before_script:
+    - docker volume create mysql_data  || true
+    - docker network create network_game  || true
   script:
     - docker run --name dbgame  -v mysql_data:/var/lib/mysql  -e  MYSQL_ROOT_PASSWORD=rootpwdgame -e  MYSQL_DATABASE=battleboat -e MYSQL_USER=battleuser -e  MYSQL_PASSWORD=battlepass --network network_game -d  mysql:5.7
     - echo "fin run MYSQL"
