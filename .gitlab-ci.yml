@@ -42,13 +42,13 @@ test:
   stage: test
   script:
     - echo "TEST THE JOB"
-    - echo " curl -I  http://localhost:3000  "
+    - echo `curl -I  http://localhost:3000`
 
 push:
   stage: push
   script: 
-    - echo "docker login -u $USERNAME -p $PASSWORD"
-    - echo "docker push  $USERNAME/$IMAGE"
+    - echo `docker login -u $USERNAME -p $PASSWORD`
+    - echo `docker push  $USERNAME/$IMAGE`
 
   only:
     - master
