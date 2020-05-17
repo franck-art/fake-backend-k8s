@@ -58,6 +58,7 @@ push:
   stage: push
   script: 
     - docker login -u $USERNAME -p $PASSWORD
+    - docker tag $USERNAME/$IMAGE
     - docker push  $USERNAME/$IMAGE
 
   only:
