@@ -46,7 +46,7 @@ test:
 
   script:
     - echo "TEST THE JOB"
-    - if [ "$$(curl -X GET  http://172.31.40.195:3000)" = "200" ]; then echo "test OK"; exit 0; else echo "test KO"; exit 1; fi
+#    - if [ "$$(curl -X GET  http://172.31.40.195:3000)" = "200" ]; then echo "test OK"; exit 0; else echo "test KO"; exit 1; fi
 
 
 #clean:
