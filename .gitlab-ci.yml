@@ -21,7 +21,7 @@ before_script:
 build:
   stage: build
   script:
-    - docker built -t $IMAGE ./fake-backend
+    - echo `docker built -t $IMAGE ./fake-backend`
 
 
 run_backend:
@@ -54,8 +54,8 @@ test:
 push:
   stage: push
   script: 
-    - docker login -u $USERNAME -p $PASSWORD
-    - docker push  $USERNAME/$IMAGE
+    - echo `docker login -u $USERNAME -p $PASSWORD`
+    - echo `docker push  $USERNAME/$IMAGE`
 
   only:
     - master
