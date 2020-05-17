@@ -38,6 +38,7 @@ run_frondend:
   script:
 
     - docker run --name battlegame  -p 3000:3000 -e  DATABASE_HOST=dbgame -e  DATABASE_PORT=3306 -e  DATABASE_USER=battleuser -e DATABASE_PASSWORD=battlepass -e DATABASE_NAME=battleboat --network network_game -d  $IMAGE 
+
     - docker cp ${PWD}/battleboat  battlegame:/etc/backend/static
     - docker ps
     - sleep 5
