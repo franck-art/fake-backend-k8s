@@ -5,6 +5,7 @@ stages:
   - run_mysql
   - run_appli
   - test
+  - clean
   - push
 
 
@@ -48,6 +49,12 @@ test:
     - echo "TEST THE JOB"
     - curl -I  http://172.31.40.195:3000
 
+
+clean:
+  stage: clean containers
+  script:
+    - docker rm -vf battlegame dbgame
+
 push:
   stage: push
   script: 
@@ -58,7 +65,5 @@ push:
     - master
    
 
-after_script:
-  
-    - docker rm -vf battlegame dbgame
+
 
