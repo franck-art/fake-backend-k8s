@@ -14,6 +14,10 @@ variables:
 
 build:
   stage: build
+  before_script:
+   - docker rm -vf dbgame battlegame || echo "delete existing containers"
+    - docker volume rm -f  mysql_data || echo "delete existing volume"
+    - docker network rm  -f network_game || echo "delete existing network"
   script:
     - docker build -t $IMAGE ./fake-backend
   
