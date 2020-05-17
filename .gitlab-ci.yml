@@ -13,9 +13,11 @@ variables:
 
 
 before_script:
+  - docker network rm network_game || true
+  - docker volume rm mysql_data || true
   - docker rm -vf battlegame dbgame || echo "container already deleded" 
-  - docker network create network_game
-  - docker volume create mysql_data
+  - docker network create network_game || true
+  - docker volume create mysql_data || true
 
 
 build:
