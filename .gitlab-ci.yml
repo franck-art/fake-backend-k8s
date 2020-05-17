@@ -5,7 +5,7 @@ stages:
   - run_mysql
   - run_appli
   - test
-  - clean containers
+#  - clean containers
   - push
 
 
@@ -46,13 +46,15 @@ test:
 
   script:
     - echo "TEST THE JOB"
-    - curl -I  http://172.31.40.195:3000
+    - if [ "$$(curl -X GET  http://172.31.40.195:3000)" = "200" ]; then echo "test OK"; exit 0; else echo "test KO"; exit 1; fi
 
 
-clean:
-  stage: clean containers
-  script:
-    - docker rm -vf battlegame dbgame
+#clean:
+#  stage: clean containers
+#  script:
+#    - docker rm -vf battlegame dbgame
+#    - docker volume rm  mysql_data
+#    - docker network rm network_game
 
 push:
   stage: push
