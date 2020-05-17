@@ -15,7 +15,7 @@ variables:
 build:
   stage: build
   before_script:
-   - docker rm -vf dbgame battlegame || echo "delete existing containers"
+    - docker rm -vf dbgame battlegame || echo "delete existing containers"
     - docker volume rm -f  mysql_data || echo "delete existing volume"
     - docker network rm  -f network_game || echo "delete existing network"
   script:
@@ -28,7 +28,8 @@ run_backend:
     - docker volume create mysql_data 
     - docker network create network_game  
   script:
-    - docker run --name dbgame  -v mysql_data:/var/lib/mysql  -e  MYSQL_ROOT_PASSWORD=rootpwdgame -e  MYSQL_DATABASE=battleboat -e MYSQL_USER=battleuser -e  MYSQL_PASSWORD=battlepass --network network_game -d  mysql:5.7
+    - docker run --name dbgame    -e  MYSQL_ROOT_PASSWORD=rootpwdgame -e  MYSQL_DATABASE=battleboat -e MYSQL_USER=battleuser -e  MYSQL_PASSWORD=battlepass --network network_game -d  mysql:5.7
+    - docker cp dbgame:/var/lib/mysql  mysql_data
     - echo "fin run MYSQL"
 
 
@@ -37,7 +38,7 @@ run_frondend:
   script:
 
     - docker run --name battlegame  -p 3000:3000 -e  DATABASE_HOST=dbgame -e  DATABASE_PORT=3306 -e  DATABASE_USER=battleuser -e DATABASE_PASSWORD=battlepass -e DATABASE_NAME=battleboat --network network_game -d  $IMAGE 
-    - docker cp ${PWD}/battleboat:/etc/backend/static
+    - docker cp ${PWD}/battleboat  battlegame:/etc/backend/static
     - docker ps
     - sleep 5
 
