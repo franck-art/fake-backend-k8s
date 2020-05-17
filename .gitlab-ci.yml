@@ -46,7 +46,7 @@ test:
 
   script:
     - echo "TEST THE JOB"
-    - curl -I  http://localhost:3000
+    - curl -I  http://172.17.0.1/:3000
 
 push:
   stage: push
