@@ -14,8 +14,6 @@ variables:
 
 build:
   stage: build
-  before_script:
-    - docker rm -vf battlegame dbgame || echo "container already deleted"
   script:
     - docker build -t $IMAGE ./fake-backend
   
@@ -23,8 +21,8 @@ build:
 run_backend:
   stage: run_mysql
   before_script:
-    - docker volume create mysql_data  || true
-    - docker network create network_game  || true
+    - docker volume create mysql_data 
+    - docker network create network_game  
   script:
     - docker run --name dbgame  -v mysql_data:/var/lib/mysql  -e  MYSQL_ROOT_PASSWORD=rootpwdgame -e  MYSQL_DATABASE=battleboat -e MYSQL_USER=battleuser -e  MYSQL_PASSWORD=battlepass --network network_game -d  mysql:5.7
     - echo "fin run MYSQL"
@@ -33,6 +31,7 @@ run_backend:
 run_frondend:
   stage: run_appli
   script:
+
     - docker run --name battlegame -v ${PWD}/battleboat:/etc/backend/static  -p 3000:3000 -e  DATABASE_HOST=dbgame -e  DATABASE_PORT=3306 -e  DATABASE_USER=battleuser -e DATABASE_PASSWORD=battlepass -e DATABASE_NAME=battleboat --network network_game -d  $IMAGE 
     - docker ps
     - sleep 5
@@ -46,15 +45,15 @@ test:
 
   script:
     - echo "TEST THE JOB"
-#    - if [ "$$(curl -X GET  http://172.31.40.195:3000)" = "200" ]; then echo "test OK"; exit 0; else echo "test KO"; exit 1; fi
+#    - if [ "$$(curl -I -X GET  http://172.31.40.195:3000 | head -1 | cut -d '1' -f 2 | cut -d '1' -f 1)" = "200" ]; then echo "test OK"; exit 0; else echo "test KO"; exit 1; fi
 
 
 #clean:
 #  stage: clean containers
 #  script:
 #    - docker rm -vf battlegame dbgame
-#    - docker volume rm  mysql_data
-#    - docker network rm network_game
+#    - docker volume rm -f  mysql_data
+#    - docker network rm  -f network_game
 
 push:
   stage: push
