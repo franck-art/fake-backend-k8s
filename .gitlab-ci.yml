@@ -13,31 +13,31 @@ variables:
 
 
 before_script:
-  - echo `docker rm -vf battlegame dbgame || echo "container already deleded" `
-  - echo `docker network create network_game`
-  - echo `docker volume create mysql_data`
+  - docker rm -vf battlegame dbgame || echo "container already deleded" 
+  - docker network create network_game
+  - docker volume create mysql_data
 
 
 build:
   stage: build
   script:
-    - echo `docker built -t $IMAGE ./fake-backend`
+    - docker build -t $IMAGE ./fake-backend
 
 
 run_backend:
   stage: run_mysql
   script:
-    - echo `docker run --name dbgame  -e  MYSQL_ROOT_PASSWORD=rootpwdgame -e  MYSQL_DATABASE=battleboat -e MYSQL_USER=battleuser -e  MYSQL_PASSWORD=battlepass --network $(network) -d  mysql:5.7`
-    - echo `docker cp mysql_data:/var/lib/mysql `
+    - docker run --name dbgame  -e  MYSQL_ROOT_PASSWORD=rootpwdgame -e  MYSQL_DATABASE=battleboat -e MYSQL_USER=battleuser -e  MYSQL_PASSWORD=battlepass --network $(network) -d  mysql:5.7
+    - docker cp mysql_data:/var/lib/mysql 
     - echo "fin run MYSQL"
 
 
 run_frondend:
   stage: run_appli
   script:
-    - echo `docker run --name battlegame  -p 3000:3000 -e  DATABASE_HOST=dbgame -e  DATABASE_PORT=3306 -e  DATABASE_USER=battleuser -e DATABASE_PASSWORD=battlepass -e DATABASE_NAME=battleboat --network $(network) -d  $IMAGE `
-    - echo `docker cp  ${PWD}/battleboat:/etc/backend/static `
-    - echo `docker ps`
+    - docker run --name battlegame  -p 3000:3000 -e  DATABASE_HOST=dbgame -e  DATABASE_PORT=3306 -e  DATABASE_USER=battleuser -e DATABASE_PASSWORD=battlepass -e DATABASE_NAME=battleboat --network $(network) -d  $IMAGE 
+    - docker cp  ${PWD}/battleboat:/etc/backend/static 
+    - docker ps
     - sleep 5
 
 
@@ -45,17 +45,17 @@ test:
   stage: test
 
   before_script:
-    - echo `apk add --update curl python && rm -rf /var/cahe/apk/* `
+    - apk add --update curl python && rm -rf /var/cahe/apk/* 
 
   script:
     - echo "TEST THE JOB"
-    - echo `curl -I  http://localhost:3000`
+    - curl -I  http://localhost:3000
 
 push:
   stage: push
   script: 
-    - echo `docker login -u $USERNAME -p $PASSWORD`
-    - echo `docker push  $USERNAME/$IMAGE`
+    - docker login -u $USERNAME -p $PASSWORD
+    - docker push  $USERNAME/$IMAGE
 
   only:
     - master
@@ -63,5 +63,5 @@ push:
 
 after_script:
   
-    - echo `docker rm -vf battlegame dbgame`
+    - docker rm -vf battlegame dbgame
 
