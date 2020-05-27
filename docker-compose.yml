@@ -19,8 +19,8 @@ services:
     image: fake-backend-gitlab
     volumes:
       - type: bind
-        source: /home/admin
-        target: /etc/backend/static
+      - source: /home/admin
+      - target: /etc/backend/static
     depends_on:
       - dbgame
     ports:
