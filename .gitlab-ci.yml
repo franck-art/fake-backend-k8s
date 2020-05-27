@@ -36,7 +36,7 @@ test:
 
   script:
     - echo "TEST THE JOB"
-    - if [ "$(curl -X GET http://127.0.0.1:80/health)" = "ok" ] ; then echo "test OK";exit 0;  else echo "test KO" ;exit 1; fi
+    - if [ "$(curl -X GET http://127.0.0.1:8282/health)" = "ok" ] ; then echo "test OK";exit 0;  else echo "test KO" ;exit 1; fi
 
 #clean:
 #  stage: clean containers
