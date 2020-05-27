@@ -18,9 +18,7 @@ services:
     container_name: battlegame
     image: fake-backend-gitlab
     volumes:
-      - type: "bind"
-      - source: "/home/admin"
-      - target: "/etc/backend/static"
+      - /home/admin/fake-backend-gitlab_CI/battleboat:/etc/backend/static
     depends_on:
       - dbgame
     ports:
