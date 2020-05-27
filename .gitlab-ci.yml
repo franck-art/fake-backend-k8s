@@ -2,8 +2,7 @@ image: docker:stable
 
 stages:
   - build
-  - run_mysql
-  - run_appli
+  - run containers
   - test
 #  - clean containers
   - push
@@ -17,32 +16,15 @@ build:
   before_script:
     - docker rm -vf dbgame battlegame || echo "delete existing containers"
     - docker volume rm -f  mysql_data || echo "delete existing volume"
-    - docker network rm network_game || echo "delete existing network"
+    - docker network rm  game || echo "delete existing network"
   script:
     - docker build -t $IMAGE ./fake-backend
   
 
-run_backend:
-  stage: run_mysql
-  before_script:
-    - docker volume create mysql_data 
-    - docker network create network_game  
+run:
+  stage: run containers   
   script:
-    - docker run --name  dbgame    -e  MYSQL_ROOT_PASSWORD=rootpwdgame -e  MYSQL_DATABASE=battleboat -e MYSQL_USER=battleuser -e  MYSQL_PASSWORD=battlepass --network network_game -d  mysql:5.7
-    - docker cp dbgame:/var/lib/mysql  mysql_data
-    - echo "fin run MYSQL"
-
-
-run_frondend:
-  stage: run_appli
-  script:
-
-    - docker run --name  battlegame  -p 3000:3000 -e  DATABASE_HOST=dbgame -e  DATABASE_PORT=3306 -e  DATABASE_USER=battleuser -e DATABASE_PASSWORD=battlepass -e DATABASE_NAME=battleboat --network network_game -d  $IMAGE 
-
-    - docker cp ${PWD}/battleboat  battlegame:/etc/backend/static
-    - docker ps
-    - sleep 5
-
+    - docker-compose up -d
 
 test:
   stage: test
@@ -52,8 +34,7 @@ test:
 
   script:
     - echo "TEST THE JOB"
-#    - if [ "$$(curl -I -X GET  http://172.31.40.195:3000 | head -1 | cut -d '1' -f 2 | cut -d '1' -f 1)" = "200" ]; then echo "test OK"; exit 0; else echo "test KO"; exit 1; fi
-
+    - if [ "$(curl -X GET http://127.0.0.1:80/health)" = "ok" ] ; then echo "test OK";exit 0;  else echo "test KO" ;exit 1; fi
 
 #clean:
 #  stage: clean containers
