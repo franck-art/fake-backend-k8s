@@ -19,7 +19,7 @@ services:
     image: fake-backend-gitlab
     volumes:
       - type: bind
-          source: /builds
+          source: /home/admin
           target: /etc/backend/static
     depends_on:
       - dbgame
