@@ -4,7 +4,7 @@ stages:
   - build
   - run containers
   - test
-#  - clean containers
+  - clean containers
   - push
 
 
@@ -40,13 +40,10 @@ test:
     - echo "TEST THE JOB"
     - if [ "$(curl -X GET http://172.18.0.1:8282/health)" = "ok" ] ; then echo "test OK";exit 0;  else echo "test KO" ;exit 1; fi
 
-#clean:
-#  stage: clean containers
-#  script:
-#    - docker rm -vf battlegame dbgame
-#    - docker volume rm -f  mysql_data
-#    - docker network rm  -f network_game
-
+clean:
+  stage: clean containers
+  script:
+    - docker-compose down
 
 push:
   stage: push
