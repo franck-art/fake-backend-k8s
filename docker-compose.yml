@@ -18,9 +18,9 @@ services:
     container_name: battlegame
     image: fake-backend-gitlab
     volumes:
-      type: bind
-      source: /builds
-      target: /etc/backend/static
+      - type: bind
+          source: /builds
+          target: /etc/backend/static
     depends_on:
       - dbgame
     ports:
