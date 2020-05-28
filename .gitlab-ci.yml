@@ -4,8 +4,9 @@ stages:
   - build
   - run containers
   - test
-  - clean containers
   - push
+  - clean containers
+  
 
 
 variables:
@@ -39,23 +40,23 @@ test:
     - echo "TEST THE JOB"
     - if [ "$(curl -X GET http://172.18.0.1:8282/health)" = "ok" ] ; then echo "test OK";exit 0;  else echo "test KO" ;exit 1; fi
 
-clean:
-  stage: clean containers
-  script:
-    - apk add --no-cache py-pip python-dev libffi-dev openssl-dev gcc libc-dev make
-    - pip install docker-compose
-    - docker-compose down
 
 push:
   stage: push
-  script: 
+  script:
     - docker login -u $USERNAME -p $PASSWORD
     - docker tag $IMAGE $USERNAME/$IMAGE:gitlab_ci
     - docker push  $USERNAME/$IMAGE:gitlab_ci
 
   only:
     - master
-   
 
+
+clean:
+  stage: clean containers
+  script:
+    - apk add --no-cache py-pip python-dev libffi-dev openssl-dev gcc libc-dev make
+    - pip install docker-compose
+    - docker-compose down
 
 
