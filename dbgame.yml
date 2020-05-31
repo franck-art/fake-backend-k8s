@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dbgame
+  labels:
+    app: backend
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      volumes:
+      - name: "data"
+        emptyDir: {}
+
+      containers:
+      - name: dbgame
+        image: mysql:5.7
+        ports:
+        - containerPort: 3306
+        volumeMounts:
+        - mountPath: /var/lib/mysql
+          name: "data"
+        env:
+        - name:  MYSQL_ROOT_PASSWORD
+          value: rootpwdgame
+        - name:  MYSQL_DATABASE
+          value: battleboat
+        - name:  MYSQL_USER
+          value: battleuser
+        - name:  MYSQL_PASSWORD
+          value: battlepass
+
+

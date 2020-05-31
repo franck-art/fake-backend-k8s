@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: battlegame
+  labels:
+    app: frontend
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: frontend
+  template:
+    metadata:
+      labels:
+        app: frontend
+    spec:
+      volumes:
+      - name: data-mount
+        hostPath:
+          path: "./battleboat"
+
+      containers:
+      - name: battlegame
+        image: fake-backend
+        ports:
+        - containerPort: 3000
+        volumeMounts:
+        - mountPath: "/etc/backend/static"
+          name: data-mount
+        env:
+        - name:  DATABASE_HOST
+          value: dbgame
+        - name:  DATABASE_PORT
+          value: "3306"
+        - name:  DATABASE_USER
+          value: battleuser
+        - name:  DATABASE_PASSWORD
+          value: battlepass
+        - name:  DATABASE_NAME
+          value: battleboat
+

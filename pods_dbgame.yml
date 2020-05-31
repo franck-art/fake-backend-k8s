@@ -1,0 +1,28 @@
+apiVersion: v1   
+kind: Pod
+metadata:
+  labels:
+  app: backend
+spec:
+  volumes:
+  - name: "db_mount"
+    emptyDir: {}
+
+  containers:
+  - name: dbgame
+    image: mysql:5.7
+    ports:
+    - containerPort: 3306
+    volumeMounts:
+    - mounthPath: "/var/lib/mysql"
+      name: "db_mount"
+    env:
+    - name:  MYSQL_ROOT_PASSWORD
+      value: rootpwdgame
+    - name:  MYSQL_DATABASE
+      value: battleboat
+    - name:  MYSQL_USER
+      value: battleuser
+    - name:  MYSQL_PASSWORD
+      value: battlepass
+
